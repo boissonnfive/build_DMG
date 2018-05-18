@@ -4,8 +4,8 @@
 -- Description      :    Crée une image DMG d'installation à partir d'un fichier .app.
 ---------------------------------------------------------------------------------------------------------------------------
 -- Remarques      :
---				    - Il faut mettre le fichier .app dans le même répertoire que le script.
---				    - Il faut mettre l'image d'arrière-plan dans le même répertoire que le script (background.png)
+--				    - Le script demande de rechercher l'application
+--				    - Il faut mettre l'image d'arrière-plan dans le même répertoire que le script (background.png) ou dans le dossier "Resources" de l'application build_DMG, sinon on demande le fichier à l'utilisateur
 --				    - Image DMG en lecture seule
 --				    - Image DMG en montage automatique
 --				    - Image DMG compressée
@@ -13,17 +13,26 @@
 --				    - testé sur Mac OS X 10.12.6
 ---------------------------------------------------------------------------------------------------------------------------
 
-
-property nomDossierApp : "Facture.app"
-
 property nomImageFond : "background.png"
 
 -- Récupère un alias vers le dossier .app
 set aliasFichierApp to choose file with prompt "Veuillez indiquez votre application."
--- set aliasFichierApp to ((dossierParent(path to me) as text) & nomDossierApp) as alias
 
--- Récupère un alias vers l'image d'arrière-plan
-set aliasImageFond to ((dossierParent(path to me) as text) & nomImageFond) as alias
+-- Récupère un alias vers l'image d'arrière-plan background.png
+-- Pour les tests, dans le même dossier que le script
+-- En production, dans le dossier "Resources"
+-- Sinon, on demande le fichier à l'utilisateur et il faut noter son nom
+try
+	set aliasImageFond to ((dossierParent(path to me) as text) & nomImageFond) as alias
+on error
+	try
+		set aliasImageFond to (path to resource nomImageFond)
+	on error
+		set aliasImageFond to choose file with prompt "Impossible de trouver une image d'arrière-plan. Veuillez en indiquer une."
+		
+		tell application "Finder" to set nomImageFond to name of aliasImageFond
+	end try
+end try
 
 -- Récupère le nom de l'application
 tell application "Finder" to set nomApp to displayed name of aliasFichierApp
