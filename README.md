@@ -37,3 +37,7 @@ Cliquez [ici](https://github.com/boissonnfive/build_DMG/releases/tag/v1.1.1) pou
 10. Enregistrez le fichier **Info.plist**
 11. Allez dans le dossier **Resources**
 12. Copiez-y l'image d'arrière-plan du projet (background.png)
+13. Enfin, faites un clic droit sur **build_DMG** et cliquez sur **Lire les informations**
+14. Faites la même chose sur une image DMG
+15. Cliquez sur l'icône du fichier DMG dans la fenêtre **infos** et copiez-la (CMD + C)
+16. Dans la fenêtre **infos** de votre application, cliquez sur l'icône et collez-la (CMD + V)
